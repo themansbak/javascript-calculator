@@ -59,59 +59,43 @@ function parseStatement(statement) {
     
 }
 
-function evaluate(statement='5+5.5*5/8') {
-    console.log(statement);
+function evaluate(statement='5.53*6.31/7+5.93+2.372') {
     statement = statement.split('');
-    console.log(statement);
     //concatenate the numbers
     var tmpArr = [];
     var tmpValue = '';
 
-    var index = 0; var endIndex = 0; var strtIndex = 0;
+    var index = 0; var strtIndex = 0;
     while (index < statement.length) {
         //if it's an operator, splice the starting index till 
         if (isNaN(statement[index]) && statement[index] !== '.') {
-            
-        } else {
-            index += 1;
-            endIndex += 1;
+            statement.splice(strtIndex, statement.slice(strtIndex, index).length, 
+                parseFloat(statement.slice(strtIndex, index).join('')));
+            index = index - statement.slice(strtIndex, index).length+1;
+            strtIndex = index+1;
         }
+        index += 1;
     }
-//     for (const c in statement) {
-//         console.log(statement[c]);
-//         if (isNaN(statement[c]) && statement[c] !== '.') { // check if it's an operator
-//             if (tmpValue.includes('.')) tmpValue = parseFloat(tmpValue); // return value as float
-//             else tmpValue = parseInt(tmpValue); // return value as integer
-//             tmpArr.push(tmpValue); // push value into array
-//             tmpArr.push(statement[c]); // push operator into array
-//             tmpValue = ''; //reset tmpValue
-//         } else {
-//             tmpValue += statement[c];
-//             console.log('tmpvalue: ' + tmpValue);
-//         }
-//     }
-//     if (tmpValue.includes('.')) tmpValue = parseFloat(tmpValue); // return value as float
-//     else tmpValue = parseInt(tmpValue); // return value as integer
-//     tmpArr.push(tmpValue); // push up the last value
-//     console.log(tmpArr);
+    // get the remaining number
+    statement.splice(strtIndex, statement.slice(strtIndex, index).length, 
+        parseFloat(statement.slice(strtIndex, index).join('')));
 
-//     /*
-//     go through the array
-//     - clump together the highest-prio operation (get the value before and after the operation)
-//     - return the operated indices as... {val},.,0
-//     - might need a parse array function to constantly 'clean' the array...
-//     */
-//    var index = 0;
-//    while (tmpArr.length > 1) {
-//        if (isNaN(tmpArr[index])) {
-//            const value = operate(tmpArr[index], tmpArr[index-1], tmpArr[index+1]);
-//            tmpArr.splice(index-1, 3, value);
-//            console.log(tmpArr);
-//            index = 0; // return to the beginning
-//        } else {
-//             index += 1;
-//        }
-//    }
+    // reset values
+    index = 0;
+    // is there a way to reduce the array? there should be.... need to find a way to make it look nicer
+    for (var val of '*/+-') {
+        while (index < statement.length) {
+            if (statement[index] === val) {
+                const value = operate(val, statement[index-1], statement[index+1]);
+                statement.splice(index-1, 3, value);
+                index -= 1;
+            } else {
+                index += 1;
+            }
+        }
+        index = 0;
+    }
+
 }
 
 function add(a, b) {
