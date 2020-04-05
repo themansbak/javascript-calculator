@@ -2,69 +2,62 @@
 const input = document.querySelector('.input-io');
 const numButtons = document.querySelectorAll('.num-btn');
 const clearButton = document.querySelector('#clr-btn');
-const decButton = document.querySelector('.dec-btn');
-const oprButton = document.querySelector('.opr-btn');
-var calcInput = '';
-const MDAS = ['*','/','+','-'];
-evaluate();
+const oprButtons = document.querySelectorAll('.opr-btn');
+
+var calcInput = ''; var curValue = '';
+
+/*
+buttons first
+- user keeps typing in a number
+    - append it to calcInput
+    - keep track if there is a decimal in it already
+- on operator press
+    - check if the last index is an operator
+    - replace with current key if it is
+    - append with current key if not
+        - append curValue to calcInput
+- on '=' press
+    - evaluate with statement
+    - place result into display and calcInput;
+*/
 
 // EVENT LISTENER ATTACHMENT
 numButtons.forEach(numButton => { // why doens't this work? i was calling the function () and not passing in just the function
     numButton.addEventListener('click', selectNumber);
 });
-decButton.addEventListener('click', (event) => {
-    if (!calcInput.includes('.')) {
-        calcInput = input.value + event.target.value;
-        input.value = '' + calcInput;
-    }
-});
 clearButton.addEventListener('click', () => {
     calcInput = '';
     input.value = calcInput;
 });
-
-/*
-user clicks a number
-- input gets updated with number
-if input already has a complete operation (2 #'s and 1 operator)
-- calculate and display the value
-*/
+oprButtons.forEach(oprButton => {
+    oprButton.addEventListener('click', () => {
+        if ('+-/*'.includes(calcInput[-1])) { // there is already an operator assigned
+            calcInput[-1] = event.target.value;
+        } else { // there is no operator assigned
+            calcInput += curValue + event.target.value;
+            curValue = '';
+        }
+        console.log(calcInput);
+        input.value = '';
+    });
+});
 
 // DISPLAY FUNCTIONS
 function selectNumber(event) {
-    calcInput = input.value + event.target.value;
-    input.value = calcInput;
+    if (event.target.value === '.' && !curValue.includes('.')) {
+        curValue += event.target.value;        
+    } else if (event.target.value !== '.') {
+        curValue += event.target.value;
+    }
+    input.value = curValue;
 }
 
 // OPERATION FUNCTIONS
-/*
-- MDAS (no parantheses or exponents)
-- go through the array and find each operator in order
-- find the current highest-prio operator
-    - calculate the value of that number
-
-- split the string into chars
-- get the number
-- get the operator
-- get the number
-- calculate the result
-
-parse the operation into an array
-- go through the parsedArray
-
-parse the statement into nested arrays
-- splice the array
-*/
-function parseStatement(statement) {
-    
-}
-
-function evaluate(statement='5.53*6.31/7+5.93+2.372') {
+// parse the array into numbers and operators
+// compute the numbers based on the order 'MDAS'
+function evaluate(statement) {
     statement = statement.split('');
     //concatenate the numbers
-    var tmpArr = [];
-    var tmpValue = '';
-
     var index = 0; var strtIndex = 0;
     while (index < statement.length) {
         //if it's an operator, splice the starting index till 
@@ -95,7 +88,7 @@ function evaluate(statement='5.53*6.31/7+5.93+2.372') {
         }
         index = 0;
     }
-
+    return statement[0];
 }
 
 function add(a, b) {
