@@ -61,43 +61,18 @@ function selectNumber(event) {
 }
 
 // OPERATION FUNCTIONS
-function parseStatement(statement) {
-    console.log(statement.split(/(\*|\/|\+|\-)+/));
-    statement = statement.split(/(\*|\/|\+|\-)+/);
-    // statement = statement.split('');
-    //concatenate the numbers
-    // var index = 0; var strtIndex = 0;
-    // while (index < statement.length) {
-    //     //if it's an operator, splice the starting index till the current
-    //     if (isNaN(statement[index]) && statement[index] !== '.') {
-    //         statement.splice(strtIndex, statement.slice(strtIndex, index).length, 
-    //             parseFloat(statement.slice(strtIndex, index).join('')));
-    //         index = index - statement.slice(strtIndex, index).length+1;
-    //         strtIndex = index+1;
-    //     }
-    //     index += 1;
-    // }
-    // // get the remaining number
-    // console.log('Start: ' + strtIndex + ', index: ' + index);
-    // console.log(statement.slice(strtIndex, index));
-    // statement.splice(strtIndex, statement.slice(strtIndex, index).length, 
-    //     parseFloat(statement.slice(strtIndex, index).join('')));
-    
-    console.log('parse statement ' + statement);
-    return statement
-}
-
 // parse the array into numbers and operators
 function evaluate(statement) {
-    statement = parseStatement(statement);
+    statement = statement.split(/(\*|\/|\+|\-)+/);
 
     // reset values
     index = 0;
     for (var val of ['*/', '+-']) {
         while (index < statement.length) {
             if (val.includes(statement[index])) {
-                console.log(statement[index-1] + ' ' + statement[index+1]);
-                const value = operate(statement[index], statement[index-1], statement[index+1]);
+                const value = operate(statement[index], 
+                    parseFloat(statement[index-1]), 
+                    parseFloat(statement[index+1]));
                 if (value === 'Unable to divide by 0') {
                     alert('Cannot divide by 0');
                     return 0;
@@ -136,6 +111,7 @@ function divide(a, b) {
 function operate(operator, a, b) {
     switch (operator) {
         case '+':
+            console.log('add');
             return add(a,b);
         case '-':
             return subtract(a,b);
@@ -144,6 +120,7 @@ function operate(operator, a, b) {
         case '/':
             return divide(a,b);
         default:
+            console.log('defaulted');
             return null;
     }
 }
