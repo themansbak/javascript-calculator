@@ -26,18 +26,24 @@ clearButton.addEventListener('click', clearInput);
 evalButton.addEventListener('click', operateInput);
 
 // DISPLAY FUNCTIONS
+function displayInput(value) {
+    input.value = value;
+}
+
 function operateInput() {
     if (curValue === '') return;
     console.log('Current operation: ' + calcInput + curValue);
     calcInput = '' + evaluate(calcInput + curValue);
-    input.value = calcInput;
+    displayInput(calcInput);
+    // input.value = calcInput;
     curValue = '';
     console.log('Result: ' + calcInput);
 }
 function clearInput() {
     calcInput = '';
     curValue = '';
-    input.value = calcInput;
+    // input.value = calcInput;
+    displayInput(calcInput);
     console.log('Cleared input: ' + calcInput + ', ' + curValue);
 }
 function selectOperator(event) {
@@ -57,7 +63,8 @@ function selectNumber(event) {
     } else if (value !== '.') {
         curValue += value;
     }
-    input.value = '' + curValue;
+    // input.value = ''+curValue;
+    displayInput(''+curValue);
 }
 
 // OPERATION FUNCTIONS
@@ -124,3 +131,7 @@ function operate(operator, a, b) {
             return null;
     }
 }
+
+// module.export {
+
+// }
