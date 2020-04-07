@@ -1,28 +1,50 @@
 /* 
 Use apple calculator as a reference point
 */
-/* button {
-    width: 20px;
-    height: 20px;
-} */
-.input-io {
-    direction: rtl;
+::placeholder {
+    color: rgb(255, 255, 255);
+}
+input {
+    background-color: rgb(75, 75, 75);
+    color: rgb(255, 255, 255);
+    font: bold large helvetica;
+    border: none;
+}
+button {
+    border: 1px solid rgb(100,100,100);
+    color: rgb(255, 255, 255);
+    font: bold large helvetica;
 }
 .container {
+    background-color: lightgray;
+    height: 50vh;
+    width: 75vh;
     display: grid;
-    justify-content: center;
-    grid-template-columns: repeat(4, 50px);
-    /* grid-template-rows: minmax(10px, auto); */
+    margin: auto;
+    grid-template-columns: repeat(4, auto);
+    row-gap: 0;
+    column-gap: 0;
     grid-template-areas:
         "input input input input"
         "clr sign perc div"
         "seven eight nine mult"
         "four five six minus"
         "one two three plus"
-        "zro zro dec eql";
+        "zro zro dec eql";    
+}
+.spcl-btn {
+    background-color: rgb(122, 122, 122);
+}
+.num-btn {
+    background-color: rgb(143, 141, 141);
+}
+.opr-btn, .eval-btn {
+    background-color: orange;
 }
 .input-io {
     grid-area: input;
+    direction: rtl;
+    font-size: 36px;
 }
 #div-btn {
     grid-area: div;
