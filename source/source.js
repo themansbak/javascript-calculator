@@ -84,10 +84,6 @@ function selectNumber(event) {
     }
     displayInput(''+curValue);
 }
-function highlightSelection(event) {
-    console.log(event.target.className);
-    event.target.className = 'btn-pressed';
-}
 
 // OPERATION FUNCTIONS
 // parse the array into numbers and operators
@@ -97,9 +93,7 @@ split the statement first
 then go through the statements 
 */
 function evaluate(statement) {
-    console.log('Pre parse: ' + statement);
     statement = statement.split(/(\*|\/|\+|\-)+/);
-    console.log('post parse: ' + statement);
     //hacky way of checking for negative
     statement[0] = statement[0]==='' ? 0 : statement[0];
     // reset values
@@ -107,11 +101,9 @@ function evaluate(statement) {
     for (var val of ['*/', '+-']) {
         while (index < statement.length) {
             if (val.includes(statement[index])) {
-                console.log('index included in val: ' + statement[index]);
                 const value = operate(statement[index], 
                     parseFloat(statement[index-1]), 
                     parseFloat(statement[index+1]));
-                console.log(value);
                 if (value==='error') {
                     alert('Statement error: '+statement.toString());
                     return 0;
@@ -154,7 +146,6 @@ function divide(a, b) {
 function operate(operator, a, b) {
     switch (operator) {
         case '+':
-            console.log('add');
             return add(a,b);
         case '-':
             return subtract(a,b);

@@ -23,10 +23,15 @@ button:hover {
     transform: scale(1.05);
     filter: brightness(125%);
 }
+body {
+    position: relative;
+    top: 10vh;
+    background-color: beige;
+}
 .container {
     background-color: lightgray;
-    height: 50vh;
-    width: 75vh;
+    height: 70vh;
+    width: 60vh;
     display: grid;
     margin: auto;
     grid-template-columns: repeat(4, auto);
