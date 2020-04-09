@@ -38,9 +38,10 @@ function displayInput(value) {
 }
 // EVENT LISTENERS
 function percentInput() {
-    if (curValue === '') return;
-    curValue = '' + (parseFloat(curValue) / 100);
-    displayInput(curValue);
+    if (curValue!=='') {
+        curValue = '' + (parseFloat(curValue) / 100);
+        displayInput(curValue);
+    }
 }
 function undoInput() {
     if (curValue === '') return;
@@ -64,12 +65,13 @@ function clearInput() {
 function selectOperator(event) {
     const value = (event.target.value) ? event.target.value : event.key;
     console.log('End of calcinput: ' + calcInput.slice(-1));
-    if (calcInput==='' || curValue!=='') calcInput += curValue + value;
-    else if (MDAS.includes(calcInput.slice(-1))) { // there is already an operator assigned
-        console.log('operator found: ' + calcInput);
-        calcInput = calcInput.slice(0,-1) + value;
+    if (calcInput==='') {
+        if (curValue!=='') calcInput += curValue + value;
+        else calcInput += 0+value;
+    } else { // if there is loaded data
+        if (curValue!=='') calcInput += curValue + value; 
+        else calcInput += value;
     }
-    console.log('Selected operator: ' + calcInput);
     curValue = '';
     input.value = '';
 }
@@ -107,8 +109,9 @@ function evaluate(statement) {
                 const value = operate(statement[index], 
                     parseFloat(statement[index-1]), 
                     parseFloat(statement[index+1]));
-                if (!value) {
-                    alert('Statement error');
+                console.log(value);
+                if (value==='error') {
+                    alert('Statement error: '+statement.toString());
                     return 0;
                 }
                 else if (value === 'Unable to divide by 0') {
@@ -126,22 +129,22 @@ function evaluate(statement) {
 }
 
 function add(a, b) {
-    if (isNaN(a) || isNaN(b)) return 'Please enter in a number';
+    if (isNaN(a) || isNaN(b)) return 0;
     return a + b;
 }
 
 function subtract(a, b) {
-    if (isNaN(a) || isNaN(b)) return 'Please enter in a number';
+    if (isNaN(a) || isNaN(b)) return 0;
     return a - b;
 }
 
 function multiply(a, b) {
-    if (isNaN(a) || isNaN(b)) return 'Please enter in a number';
+    if (isNaN(a) || isNaN(b)) return 0;
     return a * b;
 }
 
 function divide(a, b) {
-    if (isNaN(a) || isNaN(b)) return 'Please enter in a number';
+    if (isNaN(a) || isNaN(b)) return 0;
     if (b === 0) return 'Unable to divide by 0';
     return a / b;
 }
@@ -158,7 +161,7 @@ function operate(operator, a, b) {
         case '/':
             return divide(a,b);
         default:
-            console.log('defaulted');
-            return null;
+            console.log('error');
+            return 'error';
     }
 }
