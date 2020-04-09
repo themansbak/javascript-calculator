@@ -7,13 +7,20 @@ Use apple calculator as a reference point
 input {
     background-color: rgb(75, 75, 75);
     color: rgb(255, 255, 255);
-    font: bold large helvetica;
+    font: large helvetica;
     border: none;
+    direction: rtl;
+    padding-right: 10px;
 }
 button {
     border: 1px solid rgb(100,100,100);
     color: rgb(255, 255, 255);
     font: bold large helvetica;
+    outline: none;
+}
+button:hover {
+    transform: scale(1.05);
+    filter: brightness(125%);
 }
 .container {
     background-color: lightgray;
@@ -36,14 +43,13 @@ button {
     background-color: rgb(122, 122, 122);
 }
 .num-btn {
-    background-color: rgb(143, 141, 141);
+    background-color: rgb(141, 141, 141);
 }
 .opr-btn, .eval-btn {
     background-color: orange;
 }
 .input-io {
     grid-area: input;
-    direction: rtl;
     font-size: 36px;
 }
 #div-btn {

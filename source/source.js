@@ -1,9 +1,12 @@
 // import { InvalidInputError } from 'utils';
 const input = document.querySelector('.input-io');
+const buttons = document.querySelectorAll('button');
 const numButtons = document.querySelectorAll('.num-btn');
 const clearButton = document.querySelector('#clr-btn');
 const oprButtons = document.querySelectorAll('.opr-btn');
 const evalButton = document.querySelector('.eval-btn')
+const bkspButton = document.querySelector('#bksp-btn');
+const pctButton = document.querySelector('#pct-btn');
 
 var calcInput = ''; var curValue = '';
 const MDAS = '*/+-';
@@ -13,6 +16,8 @@ window.addEventListener('keydown', (event) => {
     else if (event.key==='=' || event.key==='Enter') operateInput();
     else if (MDAS.includes(event.key)) selectOperator(event);
     else if ('0123456789.'.includes(event.key)) selectNumber(event);
+    else if (event.key==='%') percentInput();
+    else if (event.key==='Backspace' || event.key==='Delete') undoInput();
 });
 
 // EVENT LISTENER ATTACHMENT
@@ -24,25 +29,35 @@ oprButtons.forEach(oprButton => {
 });
 clearButton.addEventListener('click', clearInput);
 evalButton.addEventListener('click', operateInput);
+bkspButton.addEventListener('click', undoInput);
+pctButton.addEventListener('click', percentInput);
 
 // DISPLAY FUNCTIONS
 function displayInput(value) {
     input.value = value;
 }
-
+// EVENT LISTENERS
+function percentInput() {
+    if (curValue === '') return;
+    curValue = '' + (parseFloat(curValue) / 100);
+    displayInput(curValue);
+}
+function undoInput() {
+    if (curValue === '') return;
+    curValue = curValue.split('').slice(0,-1).length===0 ? '' : ''+curValue.split('').slice(0,-1).join('');
+    displayInput(curValue);
+}
 function operateInput() {
     if (curValue === '') return;
     console.log('Current operation: ' + calcInput + curValue);
     calcInput = '' + evaluate(calcInput + curValue);
     displayInput(calcInput);
-    // input.value = calcInput;
     curValue = '';
     console.log('Result: ' + calcInput);
 }
 function clearInput() {
     calcInput = '';
     curValue = '';
-    // input.value = calcInput;
     displayInput(calcInput);
     console.log('Cleared input: ' + calcInput + ', ' + curValue);
 }
@@ -63,8 +78,11 @@ function selectNumber(event) {
     } else if (value !== '.') {
         curValue += value;
     }
-    // input.value = ''+curValue;
     displayInput(''+curValue);
+}
+function highlightSelection(event) {
+    console.log(event.target.className);
+    event.target.className = 'btn-pressed';
 }
 
 // OPERATION FUNCTIONS
@@ -80,7 +98,11 @@ function evaluate(statement) {
                 const value = operate(statement[index], 
                     parseFloat(statement[index-1]), 
                     parseFloat(statement[index+1]));
-                if (value === 'Unable to divide by 0') {
+                if (!value) {
+                    alert('Statement error');
+                    return 0;
+                }
+                else if (value === 'Unable to divide by 0') {
                     alert('Cannot divide by 0');
                     return 0;
                 }
@@ -131,7 +153,3 @@ function operate(operator, a, b) {
             return null;
     }
 }
-
-// module.export {
-
-// }
