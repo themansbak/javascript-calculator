@@ -97,9 +97,11 @@ split the statement first
 then go through the statements 
 */
 function evaluate(statement) {
-    console.log(statement);
+    console.log('Pre parse: ' + statement);
     statement = statement.split(/(\*|\/|\+|\-)+/);
-    console.log(statement);
+    console.log('post parse: ' + statement);
+    //hacky way of checking for negative
+    statement[0] = statement[0]==='' ? 0 : statement[0];
     // reset values
     index = 0;
     for (var val of ['*/', '+-']) {
