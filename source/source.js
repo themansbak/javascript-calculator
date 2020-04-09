@@ -63,11 +63,13 @@ function clearInput() {
 }
 function selectOperator(event) {
     const value = (event.target.value) ? event.target.value : event.key;
-    if (MDAS.includes(calcInput[-1])) { // there is already an operator assigned
-        calcInput[-1] = value;
-    } else { // there is no operator assigned
-        calcInput += curValue + value;
+    console.log('End of calcinput: ' + calcInput.slice(-1));
+    if (calcInput==='' || curValue!=='') calcInput += curValue + value;
+    else if (MDAS.includes(calcInput.slice(-1))) { // there is already an operator assigned
+        console.log('operator found: ' + calcInput);
+        calcInput = calcInput.slice(0,-1) + value;
     }
+    console.log('Selected operator: ' + calcInput);
     curValue = '';
     input.value = '';
 }
@@ -87,14 +89,21 @@ function highlightSelection(event) {
 
 // OPERATION FUNCTIONS
 // parse the array into numbers and operators
+/*
+need to do some sort of pruning...
+split the statement first
+then go through the statements 
+*/
 function evaluate(statement) {
+    console.log(statement);
     statement = statement.split(/(\*|\/|\+|\-)+/);
-
+    console.log(statement);
     // reset values
     index = 0;
     for (var val of ['*/', '+-']) {
         while (index < statement.length) {
             if (val.includes(statement[index])) {
+                console.log('index included in val: ' + statement[index]);
                 const value = operate(statement[index], 
                     parseFloat(statement[index-1]), 
                     parseFloat(statement[index+1]));

@@ -9,8 +9,9 @@ input {
     color: rgb(255, 255, 255);
     font: large helvetica;
     border: none;
-    direction: rtl;
-    padding-right: 10px;
+    /* direction: rtl; */
+    padding-right: 15px;
+    padding-left: 15px;
 }
 button {
     border: 1px solid rgb(100,100,100);
@@ -44,6 +45,9 @@ button:hover {
 }
 .num-btn {
     background-color: rgb(141, 141, 141);
+}
+.opr-btn:focus {
+    background-color: rgb(238, 255, 0);
 }
 .opr-btn, .eval-btn {
     background-color: orange;
